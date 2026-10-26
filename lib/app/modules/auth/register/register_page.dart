@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:futzera_app/app/core/ui/app_colors.dart';
 import 'package:futzera_app/app/core/ui/app_spacing.dart';
+import 'package:futzera_app/app/core/ui/fut_state.dart';
 import 'package:futzera_app/app/core/ui/widget/Header.dart';
 import 'package:futzera_app/app/core/ui/widget/athlete_photo_card.dart';
 import 'package:futzera_app/app/core/ui/widget/check_box.dart';
@@ -12,8 +14,9 @@ import 'package:futzera_app/app/core/ui/widget/login_atmosphere.dart';
 import 'package:futzera_app/app/core/ui/widget/positon_selector.dart';
 import 'package:futzera_app/app/core/ui/widget/round_icon_button.dart';
 import 'package:futzera_app/app/modules/auth/register/register_controller.dart';
+
 import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
+
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,16 +27,15 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegistrarPageState();
 }
 
-class _RegistrarPageState extends State<RegisterPage> {
+class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
   final nameController = TextEditingController();
-  final lastNameController = TextEditingController();
+  //final lastNameController = TextEditingController();
   final userNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final confirmPassController = TextEditingController();
-  final controller = Get.put(RegisterController());
+  //final confirmPassController = TextEditingController();
   bool _obscurePassword = true;
-
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,6 +124,7 @@ class _RegistrarPageState extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.all(AppSpacing.md),
                         child: Form(
+                          key: formKey,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
@@ -134,8 +137,8 @@ class _RegistrarPageState extends State<RegisterPage> {
                               ),
                               const SizedBox(height: 6),
                               TextFormField(
-                                //controller: controller.athleteIdController,
-                                //keyboardType: TextInputType.emailAddress,
+                                controller: nameController,
+
                                 textInputAction: TextInputAction.next,
                                 autofillHints: const [
                                   AutofillHints.username,
@@ -160,8 +163,7 @@ class _RegistrarPageState extends State<RegisterPage> {
                               ),
                               const SizedBox(height: 6),
                               TextFormField(
-                                //controller: controller.athleteIdController,
-                                //keyboardType: TextInputType.emailAddress,
+                                controller: userNameController,
                                 textInputAction: TextInputAction.next,
                                 autofillHints: const [
                                   AutofillHints.username,
@@ -215,8 +217,8 @@ class _RegistrarPageState extends State<RegisterPage> {
                               const SizedBox(height: 6),
 
                               TextFormField(
-                                //controller: controller.athleteIdController,
-                                //keyboardType: TextInputType.emailAddress,
+                                controller: emailController,
+
                                 textInputAction: TextInputAction.next,
                                 autofillHints: const [
                                   AutofillHints.username,
@@ -247,7 +249,7 @@ class _RegistrarPageState extends State<RegisterPage> {
 
                               TextFormField(
                                 obscureText: _obscurePassword,
-                                //controller: controller.athleteIdController,
+                                controller: passwordController,
                                 //keyboardType: TextInputType.emailAddress,
                                 textInputAction: TextInputAction.next,
                                 autofillHints: const [
@@ -307,7 +309,11 @@ class _RegistrarPageState extends State<RegisterPage> {
                                   hint: 'lucas@futzeira',
 
                                   //icon: Icons.badge_outlined,
-                                  suffix: Icon(Icons.security_rounded, color:AppColors.foregroundMuted, size: 14,)
+                                  suffix: Icon(
+                                    Icons.security_rounded,
+                                    color: AppColors.foregroundMuted,
+                                    size: 14,
+                                  ),
                                 ),
                                 validator: (value) =>
                                     (value == null || value.trim().isEmpty)
@@ -318,7 +324,7 @@ class _RegistrarPageState extends State<RegisterPage> {
                               SizedBox(height: AppSpacing.sm),
 
                               CheckBox(),
-                              
+
                               SizedBox(height: AppSpacing.sm),
 
                               ElevatedButton(
