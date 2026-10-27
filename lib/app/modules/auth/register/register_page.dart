@@ -140,11 +140,11 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                               const SizedBox(height: 6),
                               TextFormField(
                                 controller: _nameController,
-                                validator: Validatorless.required('Nome Obrigatório'),
+                                validator: Validatorless.required(
+                                  'Nome Obrigatório',
+                                ),
                                 textInputAction: TextInputAction.next,
-                                autofillHints: const [
-                                  AutofillHints.username,
-                                ],
+                                autofillHints: const [AutofillHints.username],
                                 style: inputTextStyle(),
                                 decoration: inputDecoration(
                                   hint: 'lucas@futzeira.com ou #10-SP',
@@ -162,16 +162,16 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                               TextFormField(
                                 controller: _userNameController,
                                 textInputAction: TextInputAction.next,
-                                autofillHints: const [
-                                  AutofillHints.username,
-                                ],
+                                autofillHints: const [AutofillHints.username],
                                 style: inputTextStyle(),
                                 decoration: inputDecoration(
                                   hint: 'lucas@futzeira',
                                   //icon: Icons.badge_outlined,
                                 ),
                                 validator: Validatorless.multiple([
-                                  Validatorless.required('Usuário obrigatório '),
+                                  Validatorless.required(
+                                    'Usuário obrigatório ',
+                                  ),
                                  // Validatorless.username
                             ]),
                               ),
@@ -247,7 +247,10 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                 controller: _passwordController,
                                 validator: Validatorless.multiple([
                                   Validatorless.required('Senha obrigatória'),
-                                  Validatorless.min(6, 'Senha deve conter pelo menos 6 caracteres'),
+                                  Validatorless.min(
+                                    6,
+                                    'Senha deve conter pelo menos 6 caracteres',
+                                  ),
                                 ]),
                                 //keyboardType: TextInputType.emailAddress,
                                 textInputAction: TextInputAction.next,
@@ -272,7 +275,6 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                     },
                                   ),
                                 ),
-                                
                               ),
 
                               SizedBox(height: AppSpacing.md),
@@ -291,8 +293,14 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                 obscureText: true,
                                 validator: Validatorless.multiple([
                                   Validatorless.required('Senha obrigatória'),
-                                  Validatorless.min(6, 'Senha deve conter pelo menos 6 caracteres'),
-                                  Validatorless.compare(_passwordController, 'Senha diferente de confirmar senha'),
+                                  Validatorless.min(
+                                    6,
+                                    'Senha deve conter pelo menos 6 caracteres',
+                                  ),
+                                  Validatorless.compare(
+                                    _passwordController,
+                                    'Senha diferente de confirmar senha',
+                                  ),
                                 ]),
                                 //keyboardType: TextInputType.emailAddress,
                                 textInputAction: TextInputAction.next,
@@ -333,11 +341,11 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                   }
 
                                   // Envie `position` junto com os demais dados do cadastro.
-                                  controller.register(position);
-                                  final formValid = _formKey.currentState?.validate() ?? false;
-                                  if(formValid){
-
-                                  }
+                                  controller.registers(position);
+                                  final formValid =
+                                      _formKey.currentState?.validate() ??
+                                      false;
+                                  if (formValid) {}
                                 },
                                 child: const Text('CRIAR CONTA'),
                               ),
