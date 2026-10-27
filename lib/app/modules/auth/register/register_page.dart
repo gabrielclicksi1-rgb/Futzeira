@@ -16,9 +16,11 @@ import 'package:futzera_app/app/core/ui/widget/round_icon_button.dart';
 import 'package:futzera_app/app/modules/auth/register/register_controller.dart';
 
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:validatorless/validatorless.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -28,14 +30,14 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
-  final nameController = TextEditingController();
-  //final lastNameController = TextEditingController();
-  final userNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _nameController = TextEditingController();
+  //final _lastNameController = TextEditingController();
+  final _userNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   //final confirmPassController = TextEditingController();
   bool _obscurePassword = true;
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,7 +126,7 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                       Padding(
                         padding: const EdgeInsets.all(AppSpacing.md),
                         child: Form(
-                          key: formKey,
+                          key: _formKey,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
@@ -137,21 +139,16 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                               ),
                               const SizedBox(height: 6),
                               TextFormField(
-                                controller: nameController,
-
+                                controller: _nameController,
+                                validator: Validatorless.required('Nome Obrigatório'),
                                 textInputAction: TextInputAction.next,
                                 autofillHints: const [
                                   AutofillHints.username,
-                                  AutofillHints.email,
                                 ],
                                 style: inputTextStyle(),
                                 decoration: inputDecoration(
                                   hint: 'lucas@futzeira.com ou #10-SP',
                                 ),
-                                validator: (value) =>
-                                    (value == null || value.trim().isEmpty)
-                                    ? 'Informe seu e-mail ou ID de atleta.'
-                                    : null,
                               ),
                               SizedBox(height: AppSpacing.md),
                               FieldLabel(
@@ -163,21 +160,20 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                               ),
                               const SizedBox(height: 6),
                               TextFormField(
-                                controller: userNameController,
+                                controller: _userNameController,
                                 textInputAction: TextInputAction.next,
                                 autofillHints: const [
                                   AutofillHints.username,
-                                  AutofillHints.email,
                                 ],
                                 style: inputTextStyle(),
                                 decoration: inputDecoration(
                                   hint: 'lucas@futzeira',
                                   //icon: Icons.badge_outlined,
                                 ),
-                                validator: (value) =>
-                                    (value == null || value.trim().isEmpty)
-                                    ? 'Informe seu e-mail ou ID de atleta.'
-                                    : null,
+                                validator: Validatorless.multiple([
+                                  Validatorless.required('Usuário obrigatório '),
+                                 // Validatorless.username
+                            ]),
                               ),
                               SizedBox(height: AppSpacing.md),
                               FieldLabel(
@@ -217,11 +213,14 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                               const SizedBox(height: 6),
 
                               TextFormField(
-                                controller: emailController,
-
+                                controller: _emailController,
+                                validator: Validatorless.multiple([
+                                  Validatorless.required('E-mail obrigatório'),
+                                  Validatorless.email('E-mail inválido'),
+                                ]),
                                 textInputAction: TextInputAction.next,
                                 autofillHints: const [
-                                  AutofillHints.username,
+                                  //AutofillHints.username,
                                   AutofillHints.email,
                                 ],
                                 style: inputTextStyle(),
@@ -229,10 +228,6 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                   hint: 'lucas@futzeira',
                                   //icon: Icons.badge_outlined,
                                 ),
-                                validator: (value) =>
-                                    (value == null || value.trim().isEmpty)
-                                    ? 'Informe seu e-mail ou ID de atleta.'
-                                    : null,
                               ),
 
                               SizedBox(height: AppSpacing.md),
@@ -249,13 +244,13 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
 
                               TextFormField(
                                 obscureText: _obscurePassword,
-                                controller: passwordController,
+                                controller: _passwordController,
+                                validator: Validatorless.multiple([
+                                  Validatorless.required('Senha obrigatória'),
+                                  Validatorless.min(6, 'Senha deve conter pelo menos 6 caracteres'),
+                                ]),
                                 //keyboardType: TextInputType.emailAddress,
                                 textInputAction: TextInputAction.next,
-                                autofillHints: const [
-                                  AutofillHints.username,
-                                  AutofillHints.email,
-                                ],
                                 style: inputTextStyle(),
                                 decoration: inputDecoration(
                                   hint: 'lucas@futzeira',
@@ -277,10 +272,7 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                     },
                                   ),
                                 ),
-                                validator: (value) =>
-                                    (value == null || value.trim().isEmpty)
-                                    ? 'Informe seu e-mail ou ID de atleta.'
-                                    : null,
+                                
                               ),
 
                               SizedBox(height: AppSpacing.md),
@@ -297,7 +289,11 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
 
                               TextFormField(
                                 obscureText: true,
-                                //controller: controller.athleteIdController,
+                                validator: Validatorless.multiple([
+                                  Validatorless.required('Senha obrigatória'),
+                                  Validatorless.min(6, 'Senha deve conter pelo menos 6 caracteres'),
+                                  Validatorless.compare(_passwordController, 'Senha diferente de confirmar senha'),
+                                ]),
                                 //keyboardType: TextInputType.emailAddress,
                                 textInputAction: TextInputAction.next,
                                 autofillHints: const [
@@ -315,10 +311,6 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                     size: 14,
                                   ),
                                 ),
-                                validator: (value) =>
-                                    (value == null || value.trim().isEmpty)
-                                    ? 'Informe seu e-mail ou ID de atleta.'
-                                    : null,
                               ),
 
                               SizedBox(height: AppSpacing.sm),
@@ -342,6 +334,10 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
 
                                   // Envie `position` junto com os demais dados do cadastro.
                                   controller.register(position);
+                                  final formValid = _formKey.currentState?.validate() ?? false;
+                                  if(formValid){
+
+                                  }
                                 },
                                 child: const Text('CRIAR CONTA'),
                               ),

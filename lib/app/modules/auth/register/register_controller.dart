@@ -4,7 +4,6 @@ import 'package:futzera_app/app/core/mixins/loader_mixin.dart';
 import 'package:futzera_app/app/core/mixins/messages_mixin.dart';
 import 'package:futzera_app/app/repositories/auth/auth_repository.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/list_notifier.dart';
 
 class RegisterController extends GetxController
     with LoaderMixin, MessagesMixin {
