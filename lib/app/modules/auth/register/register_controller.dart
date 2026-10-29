@@ -1,11 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 //import 'package:futzera_app/app/repositories/auth/auth_repository.dart';
-import 'dart:nativewrappers/_internal/vm/lib/developer.dart';
+import 'dart:developer';
 
 import 'package:futzera_app/app/core/mixins/loader_mixin.dart';
 import 'package:futzera_app/app/core/mixins/messages_mixin.dart';
 import 'package:futzera_app/app/core/rest_client/rest_client.dart';
-import 'package:futzera_app/app/models/user_model.dart';
 import 'package:futzera_app/app/repositories/auth/auth_repository.dart';
 import 'package:get/get.dart';
 
@@ -27,7 +26,7 @@ class RegisterController extends GetxController
     required String email,
     required String password,
     required String position,
-    required String option,
+    String option = 'destro',
   }) async {
     _loading.toggle();
 

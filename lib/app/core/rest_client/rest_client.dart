@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 
-class RestClient extends GetConnect{
-  final _backendBaseUrl = 'http://algumacoisa';
+class RestClient extends GetConnect {
+  final _backendBaseUrl = 'http://localhost:8080/users';
 
-  RestClient (){
-    httpClient.baseUrl =_backendBaseUrl;
-
+  RestClient() {
+    httpClient.baseUrl = _backendBaseUrl;
   }
 }
 

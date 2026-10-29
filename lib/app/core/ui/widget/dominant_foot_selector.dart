@@ -5,10 +5,7 @@ import 'package:futzera_app/app/modules/auth/register/register_controller.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 class DominantFootSelector extends StatelessWidget {
-  const DominantFootSelector({
-    super.key,
-    required this.controller,
-  });
+  const DominantFootSelector({super.key, required this.controller});
 
   final RegisterController controller;
 
@@ -19,7 +16,6 @@ class DominantFootSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         Obx(
           () => Container(
             height: 36,
@@ -39,7 +35,7 @@ class DominantFootSelector extends StatelessWidget {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: controller.dominantFoot.value == foot
-                              ?  AppColors.primaryContainer
+                              ? AppColors.primaryContainer
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(7),
                         ),

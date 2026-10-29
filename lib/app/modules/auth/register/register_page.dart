@@ -32,16 +32,15 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
-  final _nameController = TextEditingController();
-  //final _lastNameController = TextEditingController();
-  final _userNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
   final controllers = Get.put(
     RegisterController(
       authRepository: AuthRepositoryImpl(restClient: RestClient()),
     ),
   );
+  final _nameController = TextEditingController();
+  final _userNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   //final confirmPassController = TextEditingController();
   bool _obscurePassword = true;
   final _formKey = GlobalKey<FormState>();
@@ -205,7 +204,7 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                               ),
                               const SizedBox(height: 6),
 
-                              DominantFootSelector(controller: controller),
+                              DominantFootSelector(controller: controllers),
 
                               SizedBox(height: AppSpacing.md),
 
@@ -336,10 +335,10 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
 
                               ElevatedButton(
                                 onPressed: () {
-                                  final position =
+                                  final _option = controller.dominantFoot.value;
+                                  final _position =
                                       controller.selectedPosition.value;
-
-                                  if (position == null) {
+                                  if (_position == null) {
                                     Get.snackbar(
                                       'Atenção',
                                       'Selecione uma posição de destaque.',
@@ -353,7 +352,14 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                       _formKey.currentState?.validate() ??
                                       false;
                                   if (formValid) {
-                                    controller.register(name: _nameController , userName: _userNameController, email: _emailController, password: _passwordController, position: position, option: option)
+                                    controller.register(
+                                      name: _nameController.text,
+                                      userName: _userNameController.text,
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                      position: _position,
+                                      //option: _option,
+                                    );
                                   }
                                 },
                                 child: const Text('CRIAR CONTA'),
