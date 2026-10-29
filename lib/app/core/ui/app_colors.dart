@@ -21,7 +21,7 @@ abstract final class AppColors {
 
   // Brand and semantic accents.
   static const primary = Color(0xFF75FF9E);
-  static const primaryStrong = Color(0xFF00E676); 
+  static const primaryStrong = Color(0xFF00E676);
   static const onPrimary = Color(0xFF003918);
   static const primaryContainer = Color(0xFF00E676);
   static const onPrimaryContainer = Color(0xFF00612E);
@@ -49,7 +49,6 @@ abstract final class AppColors {
   static const inversePrimary = Color(0xFF006D35);
 }
 
-
 abstract final class LoginColors {
   static const background = Color(0xFF0A0E14);
   static const surface = Color(0xFF181C21);
@@ -64,26 +63,24 @@ abstract final class LoginColors {
   static const onPrimary = AppColors.onPrimary;
   static const secondary = Color(0xFFFFF0C9);
   static const gold = Color(0xFFFECF00);
-  static const cyan = Color(0xFF87F5FF); 
+  static const cyan = Color(0xFF87F5FF);
 }
 
-TextStyle labelStyle({required Color color,  double fontSize = 10 }) => GoogleFonts.montserrat(
+TextStyle labelStyle({required Color color, double fontSize = 10}) =>
+    GoogleFonts.montserrat(
       color: color,
-      fontSize: fontSize ,
+      fontSize: fontSize,
       fontWeight: FontWeight.w800,
       letterSpacing: 0.9,
     );
 
 TextStyle inputTextStyle({double letterSpacing = 0}) => GoogleFonts.inter(
-      color: LoginColors.text,
-      fontSize: 13,
-      letterSpacing: letterSpacing,
-    );
-  
+  color: LoginColors.text,
+  fontSize: 13,
+  letterSpacing: letterSpacing,
+);
 
-
-
-  InputDecoration inputDecoration({
+InputDecoration inputDecoration({
   required String hint,
   IconData? icon,
   Widget? suffix,
@@ -95,21 +92,24 @@ TextStyle inputTextStyle({double letterSpacing = 0}) => GoogleFonts.inter(
       color: LoginColors.outline.withValues(alpha: 0.78),
       fontSize: 13,
     ),
-    prefixIcon: icon!=null ? Icon(icon, color: AppColors.foregroundMuted,size: 20,): null,
+    prefixIcon: icon != null
+        ? Icon(icon, color: AppColors.foregroundMuted, size: 20)
+        : null,
     suffixIcon: suffix,
     filled: true,
     fillColor: LoginColors.surface,
     contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-    errorStyle: GoogleFonts.inter(color: LoginColors.secondary, fontSize: 11),
+    errorStyle: GoogleFonts.inter(color: AppColors.error, fontSize: 11),
     enabledBorder: _fieldBorder(const Color(0xFF31353B)),
     focusedBorder: _fieldBorder(LoginColors.primaryStrong, width: 1.5),
-    errorBorder: _fieldBorder(LoginColors.secondary),
-    focusedErrorBorder: _fieldBorder(LoginColors.secondary, width: 1.5),
+    errorBorder: _fieldBorder(AppColors.onError),
+    focusedErrorBorder: _fieldBorder(AppColors.errorContainer, width: 1.5),
     border: _fieldBorder(const Color(0xFF31353B)),
   );
 }
 
-OutlineInputBorder _fieldBorder(Color color, {double width = 1}) => OutlineInputBorder(
+OutlineInputBorder _fieldBorder(Color color, {double width = 1}) =>
+    OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.sm),
       borderSide: BorderSide(color: color, width: width),
     );

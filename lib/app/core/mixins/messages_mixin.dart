@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:futzera_app/app/core/ui/app_colors.dart';
 import 'package:get/get.dart';
@@ -47,7 +45,7 @@ extension MessageTypeColorExt on MessageType {
   Color textColor() {
     switch (this) {
       case MessageType.error:
-        return AppColors.foreground;
+        return AppColors.error;
       case MessageType.info:
         return AppColors.inverseOnSurface;
     }

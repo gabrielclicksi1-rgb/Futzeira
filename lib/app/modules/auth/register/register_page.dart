@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:futzera_app/app/core/rest_client/rest_client.dart';
 
 import 'package:futzera_app/app/core/ui/app_colors.dart';
 import 'package:futzera_app/app/core/ui/app_spacing.dart';
@@ -14,6 +15,7 @@ import 'package:futzera_app/app/core/ui/widget/login_atmosphere.dart';
 import 'package:futzera_app/app/core/ui/widget/positon_selector.dart';
 import 'package:futzera_app/app/core/ui/widget/round_icon_button.dart';
 import 'package:futzera_app/app/modules/auth/register/register_controller.dart';
+import 'package:futzera_app/app/repositories/auth/auth_repository_impl.dart';
 
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
@@ -35,6 +37,11 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
   final _userNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final controllers = Get.put(
+    RegisterController(
+      authRepository: AuthRepositoryImpl(restClient: RestClient()),
+    ),
+  );
   //final confirmPassController = TextEditingController();
   bool _obscurePassword = true;
   final _formKey = GlobalKey<FormState>();
@@ -172,8 +179,8 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                   Validatorless.required(
                                     'Usuário obrigatório ',
                                   ),
-                                 // Validatorless.username
-                            ]),
+                                  // Validatorless.username
+                                ]),
                               ),
                               SizedBox(height: AppSpacing.md),
                               FieldLabel(
@@ -341,11 +348,13 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                   }
 
                                   // Envie `position` junto com os demais dados do cadastro.
-                                  controller.registers(position);
+                                  //controller.register(position);
                                   final formValid =
                                       _formKey.currentState?.validate() ??
                                       false;
-                                  if (formValid) {}
+                                  if (formValid) {
+                                    controller.register(name: _nameController , userName: _userNameController, email: _emailController, password: _passwordController, position: position, option: option)
+                                  }
                                 },
                                 child: const Text('CRIAR CONTA'),
                               ),
