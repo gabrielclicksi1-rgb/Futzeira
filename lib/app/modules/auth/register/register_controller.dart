@@ -30,7 +30,7 @@ class RegisterController extends GetxController
   }) async {
     _loading.toggle();
 
-    final UserModel = await _authRepository.register(
+    await _authRepository.register(
       name,
       userName,
       email,

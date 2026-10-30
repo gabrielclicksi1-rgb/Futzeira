@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:futzera_app/app/core/ui/fut_state.dart';
 import 'package:futzera_app/app/core/ui/widget/field_label.dart';
 import 'package:futzera_app/app/core/ui/widget/header.dart';
+import 'package:futzera_app/app/core/ui/widget/login_form.dart';
 import 'package:futzera_app/app/core/ui/widget/primary_button.dart';
 import 'package:futzera_app/app/core/ui/widget/social_divider.dart';
 import 'package:get/get.dart';
@@ -14,21 +15,32 @@ import 'package:futzera_app/app/core/ui/widget/round_icon_button.dart';
 import 'package:futzera_app/app/core/ui/app_colors.dart';
 import 'package:futzera_app/app/core/ui/app_spacing.dart';
 
-
-
-
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = Get.put(LoginController());
+  State<LoginPage> createState() => _LoginPageState();
+}
 
+class _LoginPageState extends FutState<LoginPage, LoginController> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailEC = TextEditingController();
+  final _passwordEC = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailEC.dispose();
+    _passwordEC.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: LoginColors.background,
       body: Stack(
         children: [
-           LoginAtmosphere(),
+          LoginAtmosphere(),
           SafeArea(
             child: Center(
               child: ConstrainedBox(
@@ -41,34 +53,20 @@ class LoginPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Header(
-                        /*helpWidget: RoundIconButton(
-                          icon:Icons.help_outline,
-                          label: 'Central de ajuda',
-                          onPressed: () => Get.snackbar(
-                            'Central de ajuda',
-                            'Adicione aqui a rota ou o canal de suporte do FUTZEIRA.',
-                            snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: LoginColors.surfaceHigh,
-                            colorText: LoginColors.text,
-                            margin: const EdgeInsets.all(AppSpacing.md),
-                          ),
-                        ),*/textHeader: 'TEMPORADA 2027',
-                        /*iconWidget: RoundIconButton(
-                          icon: Icons.arrow_back,
-                           label:'Voltar',
-                           onPressed: () => Get.back())*/
-                      ),
+                      Header(textHeader: 'TEMPORADA 2027'),
                       const SizedBox(height: AppSpacing.md),
                       const _LoginBrand(),
                       const SizedBox(height: AppSpacing.lg),
-                      _LoginForm(controller: controller),
-                      const SocialDivider(label: 'OU ACESSE COM', paddingHorizontal: 12,),
-                      _SocialButtons(controller: controller),
+                      LoginForm(controller: controller),
+                      const SocialDivider(
+                        label: 'OU ACESSE COM',
+                        paddingHorizontal: 12,
+                      ),
+                      _SocialButtons(),
                       const SizedBox(height: AppSpacing.md),
-                      _GuestAccessTile(controller: controller),
+                      _GuestAccessTile(),
                       const SizedBox(height: AppSpacing.lg),
-                      _RegistrationFooter(controller: controller),
+                      _RegistrationFooter(),
                     ],
                   ),
                 ),
@@ -81,7 +79,6 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-
 // ignore: unused_element
 class _LoginHeader extends StatelessWidget {
   const _LoginHeader({required this.onBack});
@@ -92,11 +89,6 @@ class _LoginHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        /*RoundIconButton(
-          icon: Icons.arrow_back,
-          label: 'Voltar',
-          onPressed: onBack,
-        ),*/
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
           decoration: BoxDecoration(
@@ -105,7 +97,6 @@ class _LoginHeader extends StatelessWidget {
             border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
           ),
           child: Row(
-          
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
@@ -114,11 +105,16 @@ class _LoginHeader extends StatelessWidget {
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   color: LoginColors.primary,
-                  boxShadow: [BoxShadow(color: LoginColors.primary, blurRadius: 7)],
+                  boxShadow: [
+                    BoxShadow(color: LoginColors.primary, blurRadius: 7),
+                  ],
                 ),
               ),
               const SizedBox(width: 7),
-              Text('TEMPORADA 2027', style: _labelStyle(color: LoginColors.primary)),
+              Text(
+                'TEMPORADA 2027',
+                style: _labelStyle(color: LoginColors.primary),
+              ),
             ],
           ),
         ),
@@ -138,8 +134,6 @@ class _LoginHeader extends StatelessWidget {
     );
   }
 }
-
-
 
 class _LoginBrand extends StatelessWidget {
   const _LoginBrand();
@@ -184,13 +178,21 @@ class _LoginBrand extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: const [
-                    BoxShadow(color: Colors.black45, blurRadius: 16, offset: Offset(0, 7)),
+                    BoxShadow(
+                      color: Colors.black45,
+                      blurRadius: 16,
+                      offset: Offset(0, 7),
+                    ),
                   ],
                 ),
                 child: const Stack(
                   alignment: Alignment.center,
                   children: [
-                    Icon(Icons.shield_outlined, color: LoginColors.primary, size: 34),
+                    Icon(
+                      Icons.shield_outlined,
+                      color: LoginColors.primary,
+                      size: 34,
+                    ),
                     Icon(Icons.add, color: LoginColors.primary, size: 18),
                   ],
                 ),
@@ -245,172 +247,6 @@ class _LoginBrand extends StatelessWidget {
       );
 }
 
-class _LoginForm extends StatelessWidget {
-  const _LoginForm({required this.controller});
-  final LoginController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: LoginColors.surfaceHigh.withValues(alpha: 0.64),
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.045)),
-        boxShadow: const [
-          BoxShadow(color: Colors.black45, blurRadius: 28, offset: Offset(0, 14)),
-        ],
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 70,
-            right: 70,
-            child: Container(
-              height: 1,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.transparent, Color(0x4D75FF9E), Colors.transparent],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            child: Form(
-              key: controller.formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  FieldLabel(
-                    title: 'E-mail ou ID de Atleta',
-                    //trailing: 'ex: #10-SP',
-                  ),
-                  const SizedBox(height: 6),
-                  TextFormField(
-                    controller: controller.athleteIdController,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    autofillHints: const [AutofillHints.username, AutofillHints.email],
-                    style: _inputTextStyle(),
-                    decoration: _inputDecoration(
-                      hint: 'lucas@futzeira.com ou #10-SP',
-                      icon: Icons.badge_outlined,
-                    ),
-                    validator: (value) => (value == null || value.trim().isEmpty)
-                        ? 'Informe seu e-mail ou ID de atleta.'
-                        : null,
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  const FieldLabel(title: 'Senha Tática'),
-                  const SizedBox(height: 6),
-                  Obx(
-                    () => TextFormField(
-                      controller: controller.passwordController,
-                      obscureText: controller.isPasswordObscured.value,
-                      textInputAction: TextInputAction.done,
-                      autofillHints: const [AutofillHints.password],
-                      style: _inputTextStyle(letterSpacing: 1.1),
-                      decoration: _inputDecoration(
-                        hint: '••••••••••••',
-                        icon: Icons.lock_outline,
-                        suffix: IconButton(
-                          tooltip: controller.isPasswordObscured.value
-                              ? 'Mostrar senha'
-                              : 'Ocultar senha',
-                          onPressed: controller.togglePasswordVisibility,
-                          icon: Icon(
-                            controller.isPasswordObscured.value
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
-                            size: 20,
-                            color: controller.isPasswordObscured.value
-                                ? LoginColors.muted
-                                : LoginColors.primary,
-                          ),
-                        ),
-                      ),
-                      validator: (value) => (value == null || value.isEmpty)
-                          ? 'Informe sua senha.'
-                          : null,
-                      onFieldSubmitted: (_) => controller.submit(),
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Obx(
-                          () => InkWell(
-                            borderRadius: BorderRadius.circular(AppRadius.xs),
-                            onTap: () => controller.toggleRememberAccess(
-                              !controller.rememberAccess.value,
-                            ),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 22,
-                                  height: 22,
-                                  child: Checkbox(
-                                    value: controller.rememberAccess.value,
-                                    onChanged: controller.toggleRememberAccess,
-                                    activeColor: LoginColors.primary,
-                                    checkColor: LoginColors.onPrimary,
-                                    side: const BorderSide(color: LoginColors.outline),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 6),
-                                Flexible(
-                                  child: Text(
-                                    'Lembrar acesso',
-                                    style: GoogleFonts.inter(
-                                      color: LoginColors.muted,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () => controller.showIntegrationMessage('Recuperar senha'),
-                        style: TextButton.styleFrom(
-                          minimumSize: const Size(0, 40),
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          foregroundColor: LoginColors.primary,
-                        ),
-                        child: Text(
-                          'Esqueci a senha',
-                          style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Obx(
-                    () => _PrimaryLoginButton(
-                      isLoading: controller.isLoading.value,
-                      onPressed: controller.submit,
-                    ),
-                  ),
-                  //PrimaryButton(widgetfinaly: Text('teste'),),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-
 class _PrimaryLoginButton extends StatelessWidget {
   const _PrimaryLoginButton({required this.isLoading, required this.onPressed});
   final bool isLoading;
@@ -422,44 +258,49 @@ class _PrimaryLoginButton extends StatelessWidget {
       height: AppSpacing.minimumTouchTarget,
       child: PrimaryButton(
         widgetfinaly: InkWell(
-            onTap: isLoading ? null : onPressed,
-            borderRadius: BorderRadius.circular(AppRadius.sm),
-            child: Center(
-              child: isLoading
-                  ?  Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: 17,
-                          height: 17,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: LoginColors.onPrimary,
-                          ),
+          onTap: isLoading ? null : onPressed,
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+          child: Center(
+            child: isLoading
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 17,
+                        height: 17,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: LoginColors.onPrimary,
                         ),
-                        SizedBox(width: AppSpacing.sm),
-                        Text( 'AQUECENDO...', style: PrimaryButtonTextStyle()),
-                      ],
-                    )
-                  : const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('ENTRAR NA PARTIDA', style: PrimaryButtonTextStyle()),
-                        SizedBox(width: AppSpacing.sm),
-                        Icon(Icons.sports_soccer, size: 20, color: LoginColors.onPrimary),
-                      ],
-                    ),
-            ),
+                      ),
+                      SizedBox(width: AppSpacing.sm),
+                      Text('AQUECENDO...', style: PrimaryButtonTextStyle()),
+                    ],
+                  )
+                : const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'ENTRAR NA PARTIDA',
+                        style: PrimaryButtonTextStyle(),
+                      ),
+                      SizedBox(width: AppSpacing.sm),
+                      Icon(
+                        Icons.sports_soccer,
+                        size: 20,
+                        color: LoginColors.onPrimary,
+                      ),
+                    ],
+                  ),
           ),
-        ) );
+        ),
+      ),
+    );
   }
 }
 
-
-
 class _SocialButtons extends StatelessWidget {
-  const _SocialButtons({required this.controller});
-  final LoginController controller;
+  const _SocialButtons();
 
   @override
   Widget build(BuildContext context) {
@@ -469,7 +310,7 @@ class _SocialButtons extends StatelessWidget {
           child: _SocialButton(
             label: 'Google',
             icon: const _GoogleMark(),
-            onPressed: () => controller.showIntegrationMessage('Google'),
+            onPressed: () => {}, //controller.showIntegrationMessage('Google'),
           ),
         ),
         const SizedBox(width: AppSpacing.sm),
@@ -477,7 +318,7 @@ class _SocialButtons extends StatelessWidget {
           child: _SocialButton(
             label: 'Apple',
             icon: const Icon(Icons.apple, size: 20, color: LoginColors.text),
-            onPressed: () => controller.showIntegrationMessage('Apple'),
+            onPressed: () => {}, // controller.showIntegrationMessage('Apple'),
           ),
         ),
       ],
@@ -486,7 +327,11 @@ class _SocialButtons extends StatelessWidget {
 }
 
 class _SocialButton extends StatelessWidget {
-  const _SocialButton({required this.label, required this.icon, required this.onPressed});
+  const _SocialButton({
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+  });
   final String label;
   final Widget icon;
   final VoidCallback onPressed;
@@ -509,7 +354,9 @@ class _SocialButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           backgroundColor: LoginColors.surfaceHigh,
           side: BorderSide(color: Colors.white.withValues(alpha: 0.035)),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.sm)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+          ),
         ),
       ),
     );
@@ -523,7 +370,12 @@ class _GoogleMark extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShaderMask(
       shaderCallback: (bounds) => const LinearGradient(
-        colors: [Color(0xFF4285F4), Color(0xFF34A853), Color(0xFFFBBC05), Color(0xFFEA4335)],
+        colors: [
+          Color(0xFF4285F4),
+          Color(0xFF34A853),
+          Color(0xFFFBBC05),
+          Color(0xFFEA4335),
+        ],
       ).createShader(bounds),
       child: Text(
         'G',
@@ -538,8 +390,7 @@ class _GoogleMark extends StatelessWidget {
 }
 
 class _GuestAccessTile extends StatelessWidget {
-  const _GuestAccessTile({required this.controller});
-  final LoginController controller;
+  const _GuestAccessTile();
 
   @override
   Widget build(BuildContext context) {
@@ -548,9 +399,13 @@ class _GuestAccessTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppRadius.sm),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.sm),
-        onTap: () => controller.showIntegrationMessage('Acesso de convidado'),
+        onTap: () =>
+            {}, // controller.showIntegrationMessage('Acesso de convidado'),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
           child: Row(
             children: [
               Container(
@@ -560,7 +415,11 @@ class _GuestAccessTile extends StatelessWidget {
                   color: LoginColors.cyan.withValues(alpha: 0.13),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.travel_explore, color: LoginColors.cyan, size: 19),
+                child: const Icon(
+                  Icons.travel_explore,
+                  color: LoginColors.cyan,
+                  size: 19,
+                ),
               ),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
@@ -578,13 +437,20 @@ class _GuestAccessTile extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       'Explore quadras, artilheiros e torneios abertos',
-                      style: GoogleFonts.inter(color: LoginColors.muted, fontSize: 10),
+                      style: GoogleFonts.inter(
+                        color: LoginColors.muted,
+                        fontSize: 10,
+                      ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(width: AppSpacing.xs),
-              const Icon(Icons.chevron_right, color: LoginColors.muted, size: 20),
+              const Icon(
+                Icons.chevron_right,
+                color: LoginColors.muted,
+                size: 20,
+              ),
             ],
           ),
         ),
@@ -594,8 +460,7 @@ class _GuestAccessTile extends StatelessWidget {
 }
 
 class _RegistrationFooter extends StatelessWidget {
-  const _RegistrationFooter({required this.controller});
-  final LoginController controller;
+  const _RegistrationFooter();
 
   @override
   Widget build(BuildContext context) {
@@ -606,12 +471,17 @@ class _RegistrationFooter extends StatelessWidget {
           style: GoogleFonts.inter(color: LoginColors.muted, fontSize: 12),
         ),
         TextButton.icon(
-          onPressed: () {Get.toNamed('/auth/register');},//controller.showIntegrationMessage('Criar conta'),
+          onPressed: () {
+            Get.toNamed('/auth/register');
+          }, //controller.showIntegrationMessage('Criar conta'),
           iconAlignment: IconAlignment.end,
           icon: const Icon(Icons.arrow_forward, size: 16),
           label: Text(
             'Crie sua conta grátis',
-            style: GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.w700),
+            style: GoogleFonts.montserrat(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           style: TextButton.styleFrom(
             foregroundColor: LoginColors.primary,
@@ -648,22 +518,21 @@ InputDecoration _inputDecoration({
   );
 }
 
-OutlineInputBorder _fieldBorder(Color color, {double width = 1}) => OutlineInputBorder(
+OutlineInputBorder _fieldBorder(Color color, {double width = 1}) =>
+    OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadius.sm),
       borderSide: BorderSide(color: color, width: width),
     );
 
 TextStyle _inputTextStyle({double letterSpacing = 0}) => GoogleFonts.inter(
-      color: LoginColors.text,
-      fontSize: 13,
-      letterSpacing: letterSpacing,
-    );
+  color: LoginColors.text,
+  fontSize: 13,
+  letterSpacing: letterSpacing,
+);
 
 TextStyle _labelStyle({required Color color}) => GoogleFonts.montserrat(
-      color: color,
-      fontSize: 10,
-      fontWeight: FontWeight.w800,
-      letterSpacing: 0.9,
-    );
-
-
+  color: color,
+  fontSize: 10,
+  fontWeight: FontWeight.w800,
+  letterSpacing: 0.9,
+);
