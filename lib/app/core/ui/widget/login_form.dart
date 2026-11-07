@@ -6,8 +6,8 @@ import 'package:futzera_app/app/modules/auth/login/login_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({required this.controller});
-  final LoginController controller;
+   LoginForm({ this.child});
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {

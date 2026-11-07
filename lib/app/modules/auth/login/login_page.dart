@@ -14,6 +14,7 @@ import 'package:futzera_app/app/core/ui/widget/round_icon_button.dart';
 
 import 'package:futzera_app/app/core/ui/app_colors.dart';
 import 'package:futzera_app/app/core/ui/app_spacing.dart';
+import 'package:validatorless/validatorless.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -26,6 +27,7 @@ class _LoginPageState extends FutState<LoginPage, LoginController> {
   final _formKey = GlobalKey<FormState>();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -57,7 +59,218 @@ class _LoginPageState extends FutState<LoginPage, LoginController> {
                       const SizedBox(height: AppSpacing.md),
                       const _LoginBrand(),
                       const SizedBox(height: AppSpacing.lg),
-                      LoginForm(controller: controller),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: LoginColors.surfaceHigh.withValues(
+                            alpha: 0.64,
+                          ),
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.045),
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black45,
+                              blurRadius: 28,
+                              offset: Offset(0, 14),
+                            ),
+                          ],
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 0,
+                              left: 70,
+                              right: 70,
+                              child: Container(
+                                height: 1,
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.transparent,
+                                      Color(0x4D75FF9E),
+                                      Colors.transparent,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(AppSpacing.md),
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    const SizedBox(height: 6),
+                                    FieldLabel(
+                                      title: 'E-MAIL DE ACESSO',
+                                      //trailing: 'ex: #10-SP',
+                                      icon: Icons.mail_outline,
+                                      size: 12,
+                                      color: AppColors.primaryStrong,
+                                    ),
+                                    const SizedBox(height: 8),
+
+                                    TextFormField(
+                                      controller: _emailEC,
+                                      validator: Validatorless.multiple([
+                                        Validatorless.required(
+                                          'E-mail Obrigatório',
+                                        ),
+                                        Validatorless.email('E-mail inválido'),
+                                      ]),
+                                      textInputAction: TextInputAction.next,
+                                      autofillHints: const [
+                                        AutofillHints.username,
+                                      ],
+                                      style: inputTextStyle(),
+                                      decoration: inputDecoration(
+                                        hint: 'lucas@futzeira.com',
+                                      ),
+                                    ),
+
+                                    SizedBox(height: AppSpacing.md),
+
+                                    FieldLabel(
+                                      title: 'SENHA DE ACESSO',
+                                      //trailing: 'ex: #10-SP',
+                                      icon: Icons.lock_outline,
+                                      size: 12,
+                                      color: AppColors.primaryStrong,
+                                    ),
+                                    const SizedBox(height: 8),
+
+                                    TextFormField(
+                                      obscureText: _obscurePassword,
+                                      controller: _passwordEC,
+                                      validator: Validatorless.multiple([
+                                        Validatorless.required(
+                                          'Senha obrigatótia',
+                                        ),
+                                        Validatorless.min(
+                                          6,
+                                          'Mínimo 6 caracters',
+                                        ),
+                                      ]),
+                                      textInputAction: TextInputAction.next,
+                                      autofillHints: const [
+                                        AutofillHints.username,
+                                      ],
+                                      style: inputTextStyle(),
+                                      decoration: inputDecoration(
+                                        hint: 'lucas@futzeira',
+                                        //icon: Icons.badge_outlined,
+                                        suffix: IconButton(
+                                          icon: Icon(
+                                            // Alterna o ícone dependendo do estado
+                                            _obscurePassword
+                                                ? Icons.visibility_off_outlined
+                                                : Icons.visibility_outlined,
+                                            color: LoginColors.muted,
+                                            size: 16,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _obscurePassword =
+                                                  !_obscurePassword; // Inverte o estado ao clicar
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: AppSpacing.md),
+
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: InkWell(
+                                            borderRadius: BorderRadius.circular(
+                                              AppRadius.xs,
+                                            ),
+
+                                            child: Row(
+                                              children: [
+                                                const SizedBox(width: 6),
+                                                Checkbox(
+                                                  value:
+                                                      true, //controller.rememberAccess.value,
+                                                  onChanged: (bool? value) {
+                                                    print('test');
+                                                  }, //controller.toggleRememberAccess,
+                                                  activeColor:
+                                                      LoginColors.primary,
+                                                  checkColor:
+                                                      LoginColors.onPrimary,
+                                                  side: const BorderSide(
+                                                    color: LoginColors.outline,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          4,
+                                                        ),
+                                                  ),
+                                                ),
+                                                Flexible(
+                                                  child: Text(
+                                                    'Lembrar acesso',
+                                                    style: GoogleFonts.inter(
+                                                      color: LoginColors.muted,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed:
+                                              () {}, // controller.showIntegrationMessage()
+                                          //'Recuperar senha',
+                                          style: TextButton.styleFrom(
+                                            minimumSize: const Size(0, 40),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 4,
+                                            ),
+                                            foregroundColor:
+                                                LoginColors.primary,
+                                          ),
+                                          child: Text(
+                                            'Esqueci a senha',
+                                            style: GoogleFonts.inter(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: AppSpacing.xs),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        final formValid =
+                                            _formKey.currentState?.validate() ??
+                                            false;
+                                        if (formValid) {
+                                          controller.login(
+                                            email: _emailEC.text,
+                                            password: _passwordEC.text,
+                                          );
+                                        }
+                                      },
+                                      child: Text('Acessar'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       const SocialDivider(
                         label: 'OU ACESSE COM',
                         paddingHorizontal: 12,
