@@ -56,9 +56,11 @@ class SplashController extends GetxController {
     _timer?.cancel();
     super.onClose();
   }
+
+  
 }
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends GetView<SplashController> {
   const SplashPage({super.key});
 
   @override
@@ -85,9 +87,7 @@ class SplashPage extends StatelessWidget {
                       const Spacer(),
                       Vlads(),
                       const Spacer(),
-                     PrimaryButton(widgetfinaly: ElevatedButton(  onPressed: () {
-                        Get.toNamed('/auth/login');
-                      }, child: Text('Teste'))  ),
+                     PrimaryButton(widgetfinaly: ElevatedButton(  onPressed: () => controller.checkLogged(), child: Text('Teste'))  ),
                       const Spacer(),
                       _LoadingHud(controller: controller),
                       const SizedBox(height: 14),
