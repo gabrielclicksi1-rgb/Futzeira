@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:futzera_app/app/core/bindings/application_binding.dart';
 import 'package:futzera_app/app/routes/auth_routers.dart';
+import 'package:futzera_app/app/routes/home_routers.dart';
 import 'package:futzera_app/app/routes/splash_routers.dart';
 import 'package:get/get.dart';
 import 'package:futzera_app/app/core/ui/app_theme.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialBinding: ApplicationBinding(),
       theme: AppTheme.dark,
-      getPages: [...SplashRouters.routes, ...AuthRouters.routes],
+      getPages: [...SplashRouters.routes, ...AuthRouters.routes, ...HomeRouters.routers],
     );
   }
 }

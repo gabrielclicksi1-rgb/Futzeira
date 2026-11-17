@@ -1,15 +1,13 @@
-import 'dart:async';
 import 'dart:math' as math;
 import 'package:futzera_app/app/core/ui/app_colors.dart';
 import 'package:futzera_app/app/core/ui/widget/primary_button.dart';
 import 'package:futzera_app/app/modules/splash/futzeira_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:futzera_app/app/modules/splash/splash_controller.dart';
 import 'package:get/get.dart';
-
 
 class FutzeiraApp extends StatelessWidget {
   const FutzeiraApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -26,45 +24,11 @@ class FutzeiraApp extends StatelessWidget {
   }
 }
 
-
-class SplashController extends GetxController {
-  final progress = 84.obs;
-  Timer? _timer;
-
-  String get status {
-    if (progress.value >= 100) return 'PRONTO PARA O JOGO';
-    if (progress.value >= 99) return 'ENTRANDO EM CAMPO...';
-    if (progress.value >= 94) return 'PREPARANDO TÚNEL DE ACESSO...';
-    if (progress.value >= 88) return 'CALIBRANDO ATRIBUTOS FUT...';
-    return 'SINCRONIZANDO DADOS...';
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    _timer = Timer.periodic(const Duration(milliseconds: 240), (timer) {
-      if (progress.value >= 100) {
-        timer.cancel();
-      } else {
-        progress.value++;
-      }
-    });
-  }
-
-  @override
-  void onClose() {
-    _timer?.cancel();
-    super.onClose();
-  }
-}
-
-class SplashPage extends StatelessWidget {
+class SplashPage extends GetView<SplashController> {
   const SplashPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(SplashController());
-
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -85,9 +49,14 @@ class SplashPage extends StatelessWidget {
                       const Spacer(),
                       Vlads(),
                       const Spacer(),
-                     PrimaryButton(widgetfinaly: ElevatedButton(  onPressed: () {
-                        Get.toNamed('/auth/login');
-                      }, child: Text('Teste'))  ),
+                      PrimaryButton(
+                        widgetfinaly: ElevatedButton(
+                          onPressed: () {
+                            controller.checkLogged();
+                          },
+                          child: Text('Teste'),
+                        ),
+                      ),
                       const Spacer(),
                       _LoadingHud(controller: controller),
                       const SizedBox(height: 14),
@@ -144,13 +113,13 @@ class _Glow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [BoxShadow(color: color, blurRadius: 90, spreadRadius: 32)],
-        ),
-      );
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      boxShadow: [BoxShadow(color: color, blurRadius: 90, spreadRadius: 32)],
+    ),
+  );
 }
 
 class PitchPainter extends CustomPainter {
@@ -291,10 +260,7 @@ class HeroBrand extends StatelessWidget {
                   ],
                 ),
               ),
-              const CustomPaint(
-                size: Size(160, 180),
-                painter: ShieldPainter(),
-              ),
+              const CustomPaint(size: Size(160, 180), painter: ShieldPainter()),
             ],
           ),
         ),
@@ -302,12 +268,11 @@ class HeroBrand extends StatelessWidget {
         const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-           // Text('FUT', style: _BrandStyle(color: FutzeiraColors.foreground, italic: false)),
+            // Text('FUT', style: _BrandStyle(color: FutzeiraColors.foreground, italic: false)),
             SizedBox(width: 5),
-           // Text('ZEIRA', style: _BrandStyle(color: FutzeiraColors.green, italic: true)),
+            // Text('ZEIRA', style: _BrandStyle(color: FutzeiraColors.green, italic: true)),
           ],
         ),
-       
       ],
     );
   }
@@ -320,35 +285,42 @@ class Bandol extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: const Text(
-          'SUA CARREIRA • SEU CLUBE • SEU JOGO',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: FutzeiraColors.muted,
-            fontSize: 10,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.1,
-          ),
-        ),    
+        'SUA CARREIRA • SEU CLUBE • SEU JOGO',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: FutzeiraColors.muted,
+          fontSize: 10,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.1,
+        ),
+      ),
     );
-      
   }
 }
 
-  class Vlads extends StatelessWidget {
+class Vlads extends StatelessWidget {
   const Vlads({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            _FeatureChip(icon: Icons.sports_soccer, label: 'FUT CARDS'),
-            _FeatureChip(icon: Icons.military_tech, label: 'RANKING NACIONAL', color: FutzeiraColors.gold),
-            _FeatureChip(icon: Icons.query_stats, label: 'RADAR 360°', color: FutzeiraColors.blue),
-          ],
-        );
+      alignment: WrapAlignment.center,
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        _FeatureChip(icon: Icons.sports_soccer, label: 'FUT CARDS'),
+        _FeatureChip(
+          icon: Icons.military_tech,
+          label: 'RANKING NACIONAL',
+          color: FutzeiraColors.gold,
+        ),
+        _FeatureChip(
+          icon: Icons.query_stats,
+          label: 'RADAR 360°',
+          color: FutzeiraColors.blue,
+        ),
+      ],
+    );
   }
 }
 
@@ -403,8 +375,11 @@ class ShieldPainter extends CustomPainter {
     canvas.drawPath(leftEdge, neonStroke);
     canvas.drawPath(rightEdge, neonStroke);
 
-    canvas.drawCircle(const Offset(80, 88), 34,
-        Paint()..color = const Color(0xFF0D141C));
+    canvas.drawCircle(
+      const Offset(80, 88),
+      34,
+      Paint()..color = const Color(0xFF0D141C),
+    );
     canvas.drawCircle(
       const Offset(80, 88),
       34,
@@ -479,20 +454,20 @@ class _FeatureChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
-        decoration: BoxDecoration(
-          color: FutzeiraColors.surfaceHigh.withValues(alpha: 0.72),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 14, color: color),
-            const SizedBox(width: 5),
-            Text(label, style: const _TacticalStyle(fontSize: 9)),
-          ],
-        ),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
+    decoration: BoxDecoration(
+      color: FutzeiraColors.surfaceHigh.withValues(alpha: 0.72),
+      borderRadius: BorderRadius.circular(5),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 14, color: color),
+        const SizedBox(width: 5),
+        Text(label, style: const _TacticalStyle(fontSize: 9)),
+      ],
+    ),
+  );
 }
 
 class _LoadingHud extends StatelessWidget {
@@ -511,7 +486,11 @@ class _LoadingHud extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           boxShadow: const [
-            BoxShadow(color: Colors.black45, blurRadius: 24, offset: Offset(0, 12)),
+            BoxShadow(
+              color: Colors.black45,
+              blurRadius: 24,
+              offset: Offset(0, 12),
+            ),
           ],
         ),
         child: Column(
@@ -529,12 +508,14 @@ class _LoadingHud extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Text('$value%',
-                    style: const TextStyle(
-                      color: FutzeiraColors.green,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w800,
-                    )),
+                Text(
+                  '$value%',
+                  style: const TextStyle(
+                    color: FutzeiraColors.green,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 10),
@@ -544,15 +525,24 @@ class _LoadingHud extends StatelessWidget {
                 value: value / 100,
                 minHeight: 8,
                 backgroundColor: const Color(0xFF2E353E),
-                valueColor: const AlwaysStoppedAnimation(AppColors.primary), 
+                valueColor: const AlwaysStoppedAnimation(AppColors.primary),
               ),
             ),
             const SizedBox(height: 12),
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _Telemetry(icon: Icons.sensors, label: 'Server:', value: 'SA-EAST-1 (SP)'),
-                _Telemetry(icon: Icons.bolt, label: 'Latência:', value: '14ms', color: FutzeiraColors.gold),
+                _Telemetry(
+                  icon: Icons.sensors,
+                  label: 'Server:',
+                  value: 'SA-EAST-1 (SP)',
+                ),
+                _Telemetry(
+                  icon: Icons.bolt,
+                  label: 'Latência:',
+                  value: '14ms',
+                  color: FutzeiraColors.gold,
+                ),
               ],
             ),
           ],
@@ -576,24 +566,29 @@ class _Telemetry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Flexible(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 13, color: color),
-            const SizedBox(width: 4),
-            Text('$label ', style: const TextStyle(color: FutzeiraColors.muted, fontSize: 10)),
-            Flexible(
-              child: Text(value,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: FutzeiraColors.foreground,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                  )),
-            ),
-          ],
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 13, color: color),
+        const SizedBox(width: 4),
+        Text(
+          '$label ',
+          style: const TextStyle(color: FutzeiraColors.muted, fontSize: 10),
         ),
-      );
+        Flexible(
+          child: Text(
+            value,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: FutzeiraColors.foreground,
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 class _CommunitySeal extends StatelessWidget {
@@ -601,23 +596,27 @@ class _CommunitySeal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.verified, size: 16, color: FutzeiraColors.muted.withValues(alpha: 0.72)),
-          const SizedBox(width: 8),
-          Flexible(
-            child: Text(
-              'COMUNIDADE OFICIAL DO FUTEBOL AMADOR & SOCIETY',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: FutzeiraColors.muted.withValues(alpha: 0.72),
-                fontSize: 9,
-                letterSpacing: 0.4,
-              ),
-            ),
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Icon(
+        Icons.verified,
+        size: 16,
+        color: FutzeiraColors.muted.withValues(alpha: 0.72),
+      ),
+      const SizedBox(width: 8),
+      Flexible(
+        child: Text(
+          'COMUNIDADE OFICIAL DO FUTEBOL AMADOR & SOCIETY',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: FutzeiraColors.muted.withValues(alpha: 0.72),
+            fontSize: 9,
+            letterSpacing: 0.4,
           ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 }
 
 class _PulseDot extends StatelessWidget {
@@ -625,24 +624,26 @@ class _PulseDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: 8,
-        height: 8,
-        decoration: const BoxDecoration(
-          color: FutzeiraColors.green,
-          shape: BoxShape.circle,
-          boxShadow: [BoxShadow(color: FutzeiraColors.green, blurRadius: 8)],
-        ),
-      );
+    width: 8,
+    height: 8,
+    decoration: const BoxDecoration(
+      color: FutzeiraColors.green,
+      shape: BoxShape.circle,
+      boxShadow: [BoxShadow(color: FutzeiraColors.green, blurRadius: 8)],
+    ),
+  );
 }
 
 class _TacticalStyle extends TextStyle {
-  const _TacticalStyle({Color color = FutzeiraColors.muted, double fontSize = 9})
-      : super(
-          color: color,
-          fontSize: fontSize,
-          fontWeight: FontWeight.w800,
-          letterSpacing: 1.0,
-        );
+  const _TacticalStyle({
+    Color color = FutzeiraColors.muted,
+    double fontSize = 9,
+  }) : super(
+         color: color,
+         fontSize: fontSize,
+         fontWeight: FontWeight.w800,
+         letterSpacing: 1.0,
+       );
 }
 
 /*class _BrandStyle extends TextStyle {
