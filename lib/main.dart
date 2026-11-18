@@ -5,8 +5,10 @@ import 'package:futzera_app/app/routes/home_routers.dart';
 import 'package:futzera_app/app/routes/splash_routers.dart';
 import 'package:get/get.dart';
 import 'package:futzera_app/app/core/ui/app_theme.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+Future <void> main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
