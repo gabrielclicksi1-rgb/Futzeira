@@ -2,11 +2,13 @@
 //import 'package:futzera_app/app/repositories/auth/auth_repository.dart';
 import 'dart:developer';
 
+import 'package:futzera_app/app/core/constants/constants.dart';
 import 'package:futzera_app/app/core/mixins/loader_mixin.dart';
 import 'package:futzera_app/app/core/mixins/messages_mixin.dart';
 import 'package:futzera_app/app/core/rest_client/rest_client.dart';
 import 'package:futzera_app/app/repositories/auth/auth_repository.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class RegisterController extends GetxController
     with LoaderMixin, MessagesMixin {
@@ -28,9 +30,10 @@ class RegisterController extends GetxController
     required String position,
     String option = 'destro',
   }) async {
+     try {
     _loading.toggle();
 
-    await _authRepository.register(
+   final userLogged = await _authRepository.register(
       name,
       userName,
       email,
@@ -38,15 +41,16 @@ class RegisterController extends GetxController
       position,
       option,
     ); // Envie nome, apelido, foto e `position` para o cadastro.
-    try {
       _loading.toggle();
-      _message(
-        MessageModel(
-          title: 'Sucesso',
-          message: "Cadastro realizado com sucesso",
-          type: MessageType.info,
-        ),
-      );
+      GetStorage().write(Constants.USER_KEY, userLogged.id);
+      //Get.back();
+      // _message(
+      //   MessageModel(
+      //     title: 'Sucesso',
+      //     message: "Cadastro realizado com sucesso",
+      //     type: MessageType.info,
+      //   ),
+      // );
     } on RestClientException catch (e, s) {
       _loading.toggle();
       Get.back();

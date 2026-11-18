@@ -1,5 +1,5 @@
-import 'package:futzera_app/app/modules/auth/home/home_bindings.dart';
-import 'package:futzera_app/app/modules/auth/home/home_page.dart';
+import 'package:futzera_app/app/modules/home/home_bindings.dart';
+import 'package:futzera_app/app/modules/home/home_page.dart';
 import 'package:get/get.dart';
 
 class HomeRouters {

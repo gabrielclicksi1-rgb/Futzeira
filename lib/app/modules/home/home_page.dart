@@ -2,6 +2,9 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:futzera_app/app/core/services/auth_services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 /// HomePage inicial do Futzeira.
 ///
@@ -47,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                 index: _selectedTab,
                 children: [
                   _PlaceholderPage(title: 'Partidas'),
-                  const _AthleteHomeContent(),
+                   _AthleteHomeContent(),
                   _PlaceholderPage(title: 'Clube'),
                   _PlaceholderPage(title: 'Prancheta'),
                   _PlaceholderPage(title: 'Torneios'),
@@ -1217,6 +1220,8 @@ class _EquipmentSection extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
+                  Get.find<AuthServices>().logout();
+                  Get.toNamed('/auth/login');
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Personalização em desenvolvimento.'),
