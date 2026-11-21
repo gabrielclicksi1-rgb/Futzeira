@@ -28,7 +28,7 @@ class RegisterController extends GetxController
     required String email,
     required String password,
     required String position,
-    String option = 'destro',
+    String dominantFoot = 'destro',
   }) async {
      try {
     _loading.toggle();
@@ -39,7 +39,7 @@ class RegisterController extends GetxController
       email,
       password,
       position,
-      option,
+      dominantFoot,
     ); // Envie nome, apelido, foto e `position` para o cadastro.
       _loading.toggle();
       GetStorage().write(Constants.USER_KEY, userLogged.id);

@@ -17,7 +17,7 @@ class AuthRepositoryImpl implements AuthRepository {
     String email,
     String password,
     String position,
-    String option,
+    String dominantFoot,
   ) async {
     final result = await _restClient.post('/auth/register', {
       'name': name,
@@ -25,7 +25,7 @@ class AuthRepositoryImpl implements AuthRepository {
       'email': email,
       'password': password,
       'position': position,
-      'option': option,
+      'dominantFoot': dominantFoot,
     });
 
     if (result.hasError) {

@@ -8,6 +8,6 @@ abstract class AuthRepository {
     String email,
     String password,
     String position,
-    String option,
+    String dominantFoot,
   );
 }

@@ -1,0 +1,4 @@
+enum TeamRole {
+  athlete,
+  coach,
+}

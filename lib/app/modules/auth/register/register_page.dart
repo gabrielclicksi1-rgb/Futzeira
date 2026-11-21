@@ -337,10 +337,10 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
 
                               ElevatedButton(
                                 onPressed: () {
-                                  final _option = controller.dominantFoot.value;
-                                  final _position =
+                                  final dominantFoot = controller.dominantFoot.value;
+                                  final position =
                                       controller.selectedPosition.value;
-                                  if (_position == null) {
+                                  if (position == null) {
                                     Get.snackbar(
                                       'Atenção',
                                       'Selecione uma posição de destaque.',
@@ -359,8 +359,8 @@ class _RegistrarPageState extends FutState<RegisterPage, RegisterController> {
                                       userName: _userNameController.text,
                                       email: _emailController.text,
                                       password: _passwordController.text,
-                                      position: _position,
-                                      //option: _option,
+                                      position: position,
+                                     dominantFoot: dominantFoot,
                                     );
                                   }
                                 },

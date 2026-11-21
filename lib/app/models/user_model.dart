@@ -8,7 +8,7 @@ class UserModel {
   final String email;
   final String position;
   final String password;
-  final String option;
+  final String dominantFoot;
   UserModel({
     required this.id,
     required this.name,
@@ -16,7 +16,7 @@ class UserModel {
     required this.email,
     required this.position,
     required this.password,
-    required this.option,
+    required this.dominantFoot,
   });
 
   Map<String, dynamic> toMap() {
@@ -27,7 +27,7 @@ class UserModel {
       'email': email,
       'position': position,
       'password': password,
-      'option': option,
+      'dominantFoot': dominantFoot,
     };
   }
 
@@ -35,11 +35,11 @@ class UserModel {
     return UserModel(
       id: (map['id'] ?? 0) as int,
       name: (map['name'] ?? '') as String,
-      userName: (map['UserName'] ?? '') as String,
+      userName: (map['userName'] ?? '') as String,
       email: (map['email'] ?? '') as String,
       position: (map['position'] ?? '') as String,
       password: (map['password'] ?? '') as String,
-      option: (map['option'] ?? '') as String,
+      dominantFoot: (map['dominantFoot'] ?? '') as String,
     );
   }
 
