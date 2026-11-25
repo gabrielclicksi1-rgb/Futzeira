@@ -1,5 +1,5 @@
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 abstract  class FutzeiraColors {
   static const background = Color(0xFF080F16);
   static const surface = Color(0xFF192028);

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:futzera_app/app/core/bindings/application_binding.dart';
 import 'package:futzera_app/app/routes/auth_routers.dart';
 import 'package:futzera_app/app/routes/home_routers.dart';

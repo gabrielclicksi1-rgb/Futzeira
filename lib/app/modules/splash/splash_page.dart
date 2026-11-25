@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:futzera_app/app/core/ui/app_colors.dart';
 import 'package:futzera_app/app/core/ui/widget/primary_button.dart';
 import 'package:futzera_app/app/modules/splash/futzeira_colors.dart';
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:futzera_app/app/modules/splash/splash_controller.dart';
 import 'package:get/get.dart';

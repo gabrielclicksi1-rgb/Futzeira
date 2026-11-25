@@ -1,3 +1,4 @@
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:futzera_app/app/core/ui/fut_state.dart';
 import 'package:futzera_app/app/core/ui/widget/field_label.dart';

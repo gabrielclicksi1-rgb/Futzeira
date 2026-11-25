@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 mixin LoaderMixin on GetxController {
   void loaderListener(RxBool loading) {

@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:futzera_app/app/core/services/auth_services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -720,8 +720,7 @@ class _ShareCardButton extends StatelessWidget {
 class _SectionCard extends StatelessWidget {
   const _SectionCard({
     required this.child,
-    this.padding = const EdgeInsets.all(14),
-  });
+  }) : padding = const EdgeInsets.all(14);
 
   final Widget child;
   final EdgeInsetsGeometry padding;
@@ -1245,7 +1244,7 @@ class _EquipmentSection extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: items.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 9),
+              separatorBuilder: (_, _) => const SizedBox(width: 9),
               itemBuilder: (context, index) =>
                   _EquipmentTile(data: items[index]),
             ),
@@ -1471,8 +1470,8 @@ class _FutzeiraBottomNavigation extends StatelessWidget {
   }
 }
 
-class _TabItem {
-  const _TabItem({required this.label, required this.icon});
+class TabItem {
+  const TabItem({required this.label, required this.icon});
 
   final String label;
   final IconData icon;

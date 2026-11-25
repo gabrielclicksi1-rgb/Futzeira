@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:futzera_app/app/core/ui/app_colors.dart';
 import 'package:futzera_app/app/core/ui/app_spacing.dart';
-import 'package:futzera_app/app/core/ui/widget/field_label.dart';
-import 'package:futzera_app/app/modules/auth/login/login_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginForm extends StatelessWidget {
-   LoginForm({ this.child});
+   const LoginForm({super.key,  this.child});
   final Widget? child;
 
   @override
@@ -107,7 +105,7 @@ class LoginForm extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.xs),
 
                         //onTap: //() => controller.toggleRememberAccess(
-                        //!controller.rememberAccess.value,)
+                        //controller.rememberAccess.value,)
                         child: Row(
                           children: [
                             SizedBox(
@@ -176,12 +174,16 @@ class LoginForm extends StatelessWidget {
     );
   }
 
-  TextStyle? _inputTextStyle() {}
+  TextStyle? _inputTextStyle() {
+    return null;
+  }
 
   InputDecoration? _inputDecoration({
     required String hint,
     required IconData icon,
-  }) {}
+  }) {
+    return null;
+  }
 }
 
 class _PrimaryLoginButton {}

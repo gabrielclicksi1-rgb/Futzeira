@@ -8,6 +8,6 @@ class ServerHandler {
     router.get('/', (Request resquest) {
       return Response(200, body: 'primeira rota');
     });
-    return router;
+    return router.call;
   }
 }

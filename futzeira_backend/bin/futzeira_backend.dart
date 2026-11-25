@@ -1,4 +1,3 @@
-import 'package:shelf/shelf.dart' hide ServerHandler;
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'server_handler.dart';
 

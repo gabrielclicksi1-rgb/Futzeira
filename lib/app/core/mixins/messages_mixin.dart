@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:futzera_app/app/core/ui/app_colors.dart';
 import 'package:get/get.dart';
 
