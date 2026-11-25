@@ -1,0 +1,4 @@
+enum MatchType {
+  teamMatch,
+  openMatch,
+}
