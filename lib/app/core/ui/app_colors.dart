@@ -47,6 +47,8 @@ abstract final class AppColors {
   static const inverseSurface = Color(0xFFDCE3EE);
   static const inverseOnSurface = Color(0xFF2A313A);
   static const inversePrimary = Color(0xFF006D35);
+  static const text = Color(0xFFE0E2EA);
+  static const muted = Color(0xFFBACBB9);
 }
 
 abstract final class LoginColors {
@@ -64,6 +66,7 @@ abstract final class LoginColors {
   static const secondary = Color(0xFFFFF0C9);
   static const gold = Color(0xFFFECF00);
   static const cyan = Color(0xFF87F5FF);
+
 }
 
 TextStyle labelStyle({required Color color, double fontSize = 10}) =>
