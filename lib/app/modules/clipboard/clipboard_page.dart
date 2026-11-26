@@ -90,23 +90,29 @@ class ClipboardPage extends GetView<ClipboardController> {
 }
 
 class Campo extends CustomPainter {
-  @override
+ @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..strokeWidth = 5;
+    final paint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 2.0
+      ..style = PaintingStyle.stroke;
 
+    // Exemplo: Desenhando apenas a linha do meio-campo usando as dimensões relativas (size)
+    // size.width e size.height se adaptam perfeitamente a qualquer tamanho de tela!
     canvas.drawLine(
-      Offset(size.width * 1 / 100, size.height * 1 / 2),
-      Offset(size.width * 0.99, size.height * 1 / 2),
+      Offset(0, size.height / 2),
+      Offset(size.width, size.height / 2),
       paint,
     );
 
-    canvas.drawLine(
-      Offset(size.width * 1 / 100, size.height * 1 / 2),
-      Offset(size.width * 0.7, size.height * 1 / 2),
+    // Círculo central usando o tamanho relativo
+    canvas.drawCircle(
+      Offset(size.width / 2, size.height / 2),
+      size.width * 0.15, // 15% da largura do campo
       paint,
     );
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
