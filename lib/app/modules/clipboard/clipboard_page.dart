@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:futzera_app/app/core/ui/app_colors.dart';
 import 'package:futzera_app/app/core/ui/app_spacing.dart';
 import 'package:futzera_app/app/core/ui/widget/home_header.dart';
@@ -15,7 +17,6 @@ class ClipboardPage extends GetView<ClipboardController> {
       backgroundColor: AppColors.background,
       body: Stack(
         children: [
-          LoginAtmosphere(),
           SafeArea(
             bottom: false,
             child: LayoutBuilder(
@@ -63,10 +64,6 @@ class ClipboardPage extends GetView<ClipboardController> {
                                   decoration: BoxDecoration(
                                     color: AppColors.surfaceLowest,
                                     borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: AppColors.onPrimary,
-                                      width: 1,
-                                    ),
                                   ),
                                 ),
 
@@ -107,6 +104,33 @@ class Campo extends CustomPainter {
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 
+
+      final paintFill = Paint()
+      ..color = AppColors.inversePrimary
+      ..style = PaintingStyle.fill;
+
+     final baixoPontoPenalt = Offset(size.width * 1/2 , size.height - 80);
+
+     final double raioMeiaLua = size.width * 0.10;
+
+     //final baixorect = Rect.fromCircle(center: baixoPontoPenalt, radius: raioMeiaLua);
+     final baixorect = Rect.fromCenter(
+      center:baixoPontoPenalt,
+      width: size.width * 0.2,  // Largura do oval (horizontal)
+      height: size.height * 0.10, // Altura do oval (vertical - mude aqui para deixar mais achatado ou pontudo)
+    );
+
+      const double baixoanguloInicial = math.pi;
+
+      const double anguloVarredura = math.pi;
+
+
+
+
+      final altoPontoPenalt = Offset(size.width * 1/2, 80);
+      final altorect = Rect.fromCircle(center: altoPontoPenalt, radius: raioMeiaLua);
+      const double altoanguloInicial = 0.0;
+       
     // Exemplo: Desenhando apenas a linha do meio-campo usando as dimensões relativas (size)
     // size.width e size.height se adaptam perfeitamente a qualquer tamanho de tela!
     canvas.drawLine(
@@ -124,7 +148,7 @@ class Campo extends CustomPainter {
     canvas.drawCircle(
       Offset(size.width / 2, size.height / 2),
       size.width * 0.007, // 15% da largura do campo
-      paint,
+       paintFill,
     );
 
      canvas.drawLine(
@@ -189,7 +213,115 @@ class Campo extends CustomPainter {
 
 
 
- 
+
+  
+  //marca do penalti baixo
+    canvas.drawCircle(
+      Offset(size.width * 1/2, size.height - 55),
+      size.width * 0.0070, // 15% da largura do campo
+       paintFill,
+    );
+   // marca do penalti cima
+    canvas.drawCircle(
+      Offset(size.width * 1/2, 55),
+      size.width * 0.0070, // 15% da largura do campo
+       paintFill,
+    );
+
+
+    canvas.drawLine(
+      Offset( size.width * 8/20, 10),
+      Offset(size.width * 8/20, 2),
+      paint,
+    );
+
+    canvas.drawLine(
+      Offset( size.width * 12/20, 10),
+      Offset(size.width * 12/20, 2),
+      paint,
+    );
+
+
+     canvas.drawLine(
+      Offset( size.width * 8/20, 2),
+      Offset(size.width * 12/20, 2),
+      paint,
+    );
+
+
+
+     canvas.drawLine(
+      Offset( size.width * 8/20, size.height - 10),
+      Offset(size.width * 8/20, size.height - 2),
+      paint,
+    );
+
+
+    canvas.drawLine(
+      Offset( size.width * 12/20, size.height - 10),
+      Offset(size.width * 12/20, size.height - 2),
+      paint,
+    );
+
+
+    
+    canvas.drawLine(
+      Offset( size.width * 8/20, size.height - 2),
+      Offset(size.width * 12/20, size.height - 2),
+      paint,
+    );
+
+
+    
+    canvas.drawLine(
+      Offset( size.width * 7/20, size.height - 35),
+      Offset(size.width * 7/20, size.height - 10),
+      paint,
+    );
+
+    canvas.drawLine(
+      Offset( size.width * 13/20, size.height - 35),
+      Offset(size.width * 13/20, size.height - 10),
+      paint,
+    );
+
+    canvas.drawLine(
+      Offset( size.width * 7/20, size.height - 35),
+      Offset(size.width * 13/20, size.height - 35),
+      paint,
+    );
+
+
+
+
+ canvas.drawLine(
+      Offset( size.width * 7/20,   35),
+      Offset(size.width * 7/20,   10),
+      paint,
+    );
+
+    canvas.drawLine(
+      Offset( size.width * 13/20,   35),
+      Offset(size.width * 13/20,   10),
+      paint,
+    );
+
+    canvas.drawLine(
+      Offset( size.width * 7/20,   35),
+      Offset(size.width * 13/20,   35),
+      paint,
+    );
+
+
+
+
+
+   
+  
+    canvas.drawArc(baixorect,  baixoanguloInicial, anguloVarredura, false, paint);
+    canvas.drawArc(altorect,  altoanguloInicial, anguloVarredura, false, paint);
+     
+
 
   }
 
